@@ -1,8 +1,9 @@
-# Anonymizing Data in Ephemeral Environments
+# Anonymizing Data with Coder
 
-This is a demo application for ephemeral development environments, such as testing, staging, and sandbox setups. It can be used for reference or as a starting point to build vendor specific architectures that work with Privacy Dynamics. The application is designed to be as simple and basic as possible.
+This is a demo application to show how to use Privacy Dynamics together with [Coder](https://coder.com).
 
 ## A reference architecture
+
 The reference architecture we propose is designed specifically for ephemeral development environments. These environments often contain subsets of production data, making it essential to safeguard Personally Identifiable Information (PII) and other sensitive details.
 
 ### Key components:
@@ -18,6 +19,7 @@ For the demonstration, two instances of the app should be started. One instance 
 ![](docs/Basic%20Anonymizing%20Data%20for%20Dev%20and%20Test%20Evironments.jpg)
 
 ## Leveraging Privacy Dynamics
+
 The demonstration relies on the [Privacy Dynamics Software-as-a-Service (SaaS)](https://www.privacydynamics.io) platform to anonymize the dataset. In order for Privacy Dynamics to work, it must be able to connect to both the source and destination databases. In most cases, networking adjustments must be made to make the databases accessible by Privacy Dynamics.
 
 ![](docs/Anonymizing%20Data%20for%20Dev%20and%20Test%20Evironments.jpg)
@@ -25,6 +27,7 @@ The demonstration relies on the [Privacy Dynamics Software-as-a-Service (SaaS)](
 Once connectivity to the databases is established, a base environment can be used to store an anonymized copy of production data, refreshed on an hourly, daily, or weekly schedule. Database snapshots are used to copy and replicate the anonymized data to _n_ number of remote environments.
 
 ## Getting started
+
 You can run a single instance of the application locally. All you need to get started is [Docker](https://www.docker.com/) installed on your local machine.
 
 1. Start the application with `docker compose -up --build`. This will seed the PostgreSQL database with data from the JSON file.
