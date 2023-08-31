@@ -1,6 +1,6 @@
 # Anonymizing Data with Coder
 
-This is a demo application to show how to use Privacy Dynamics together with [Coder](https://coder.com).
+This is a demo application to show how to use [Privacy Dynamics](https://www.privacydynamics.io/) together with [Coder](https://coder.com).
 
 ## A reference architecture
 
