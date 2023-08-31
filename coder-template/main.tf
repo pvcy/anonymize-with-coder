@@ -99,7 +99,7 @@ resource "coder_agent" "main" {
       echo "Docker already installed, skipping..."
     fi
 
-    if [ ! -d "$HOME/repos/anonymize-demo" ]; then
+    if [ ! -d "$HOME/repos/anonymize-with-coder" ]; then
       install -m 0755 -d $HOME/repos
       echo "Cloning anonymize-with-coder repo"
       git clone https://github.com/pvcy/anonymize-with-coder $HOME/repos/anonymize-with-coder
@@ -109,12 +109,12 @@ resource "coder_agent" "main" {
     fi
 
     # Download snapshot if it doesn't exist
-    if [ ! -d "$HOME/db-snapshots" ]; then
-      install -m 0755 -d $HOME/db-snapshots
+    if [ ! -d "/db-snapshots" ]; then
+      sudo install -m 0755 -o "${local.linux_user}" -g "${local.linux_user}" -d /db-snapshots
     fi
-    if [ ! -f "$HOME/db-snapshots/anonymize_demo_snap.sql" ]; then
+    if [ ! -f "/db-snapshots/anonymize_demo_snap.sql" ]; then
       echo "DB Snapshot doesn't exist. Downloading..."
-      gsutil cp gs://anonymize-demo-snapshots/anonymize_demo_snap.sql "$HOME/db-snapshots/"
+      gsutil cp gs://anonymize-demo-snapshots/anonymize_demo_snap.sql "/db-snapshots/"
     else
       echo "DB Snapshot already exists."
     fi
@@ -202,9 +202,15 @@ resource "google_compute_instance" "dev" {
 #!/usr/bin/env sh
 set -eux
 
-# If user does not exist, create it and set up passwordless sudo
+# If user does not exist, create it
 if ! id -u "${local.linux_user}" >/dev/null 2>&1; then
+  echo "${local.linux_user} did not exist. Creating..."
   useradd -m -s /bin/bash "${local.linux_user}"
+fi
+
+# If user has not been added to sudoers, add it to set up passwordless sudo
+if [ ! -f /etc/sudoers.d/coder-user ]; then
+  echo "Coder user did not exist in sudoers. Creating..."
   echo "${local.linux_user} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/coder-user
 fi
 
